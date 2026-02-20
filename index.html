@@ -15,8 +15,9 @@
       --text-main: #1e293b;
       --text-sub: #64748b;
       --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-      --jr-color: #008000; /* JRグリーン */
-      --bus-color: #2563eb; /* バスブルー */
+      --jr-color: #008000;
+      --bus-color: #2563eb;
+      --weather-color: #f59e0b;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,81 +30,37 @@
     }
 
     header {
-      padding: 2rem;
+      padding: 1.5rem;
       background: #ffffff;
       border-bottom: 3px solid var(--accent);
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       box-shadow: var(--shadow);
     }
 
     header h1 {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: var(--text-main);
     }
 
-    main { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 3rem; }
-    .section { margin-bottom: 3rem; }
+    main { max-width: 1200px; margin: 0 auto; padding: 0 1rem 3rem; }
+    .section { margin-bottom: 2.5rem; }
 
     .section-label {
       display: flex; align-items: center; gap: 0.5rem;
-      margin-bottom: 1.5rem; padding-bottom: 0.5rem;
+      margin-bottom: 1.2rem; padding-bottom: 0.5rem;
       border-bottom: 2px solid var(--border);
     }
 
     .section-label h2 {
-      font-size: 1.2rem; font-weight: 700; color: var(--text-main);
+      font-size: 1.1rem; font-weight: 700; color: var(--text-main);
     }
 
-    .accent-icon { color: var(--accent); font-size: 1.2rem; }
+    .accent-icon { color: var(--accent); font-size: 1.1rem; }
 
-    /* 運行情報セクションのスタイル */
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
-    }
-
-    .info-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.2rem;
-      text-decoration: none;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      transition: all 0.2s;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .info-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
-      box-shadow: var(--shadow);
-    }
-
-    .info-icon {
-      font-size: 1.8rem;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      background: #f1f5f9;
-    }
-
-    .jr-icon { color: var(--jr-color); }
-    .bus-icon { color: var(--bus-color); }
-
-    .info-content h3 { font-size: 1rem; margin-bottom: 0.2rem; }
-    .info-content p { font-size: 0.8rem; color: var(--text-sub); }
-
-    /* 既存のライブカメラグリッド */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem; }
+    /* ライブカメラグリッド */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.2rem; }
 
     .cam-card {
       background: var(--panel); border: 1px solid var(--border);
@@ -113,14 +70,14 @@
     }
 
     .cam-title {
-      padding: 0.8rem 1rem; font-weight: 700; font-size: 0.95rem;
+      padding: 0.7rem 1rem; font-weight: 700; font-size: 0.9rem;
       background: #f1f5f9; border-bottom: 1px solid var(--border);
       display: flex; justify-content: space-between; align-items: center;
     }
 
     .timer-badge {
-      font-size: 0.75rem; color: #ffffff; background: var(--text-sub);
-      padding: 2px 8px; border-radius: 999px; min-width: 45px; text-align: center;
+      font-size: 0.7rem; color: #ffffff; background: var(--text-sub);
+      padding: 2px 8px; border-radius: 999px; min-width: 42px; text-align: center;
     }
 
     .cam-body {
@@ -159,9 +116,35 @@
     }
 
     .refresh-note {
-      font-size: 0.75rem; color: var(--text-sub);
-      padding: 0.5rem 1rem; text-align: right; background: #ffffff;
+      font-size: 0.7rem; color: var(--text-sub);
+      padding: 0.4rem 1rem; text-align: right; background: #ffffff;
     }
+
+    /* 運行情報・気象情報のスタイル */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.8rem;
+    }
+
+    .info-card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem;
+      text-decoration: none; color: var(--text-main);
+      display: flex; align-items: center; gap: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .info-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    .info-icon {
+      font-size: 1.5rem; width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: #f1f5f9;
+    }
+
+    .info-content h3 { font-size: 0.9rem; margin-bottom: 0.1rem; }
+    .info-content p { font-size: 0.75rem; color: var(--text-sub); }
 
     footer {
       text-align: center; padding: 2rem;
@@ -171,7 +154,6 @@
 
     @media (max-width: 640px) {
       .grid { grid-template-columns: 1fr; }
-      header h1 { font-size: 1.4rem; }
     }
   </style>
 </head>
@@ -186,168 +168,119 @@
   <section class="section">
     <div class="section-label">
       <span class="accent-icon">🔺</span>
-      <h2>公共交通機関 運行情報</h2>
+      <h2>札幌・新さっぽろ周辺</h2>
+    </div>
+    <div class="grid">
+      <div class="cam-card">
+        <div class="cam-title"><span>大通公園西4丁目 — STV</span><span class="timer-badge" id="timer-stv-odori">60s</span></div>
+        <div class="cam-body" id="wrap-stv-odori">
+          <img class="live-img" id="img-stv-odori" alt="STV大通公園">
+          <div class="img-overlay" id="ov-stv-odori"><div class="spinner"></div></div>
+        </div>
+        <div class="refresh-note">60秒更新 / STV</div>
+      </div>
+
+      <div class="cam-card">
+        <div class="cam-title"><span>大通ビッセ — HBC</span><span class="timer-badge" id="timer-hbc-odori">60s</span></div>
+        <div class="cam-body" id="wrap-hbc-odori">
+          <img class="live-img" id="img-hbc-odori" alt="HBC大通ビッセ">
+          <div class="img-overlay" id="ov-hbc-odori"><div class="spinner"></div></div>
+        </div>
+        <div class="refresh-note">60秒更新 / HBC</div>
+      </div>
+
+      <div class="cam-card">
+        <div class="cam-title"><span>厚別区小野幌 — 国道12号</span><span class="timer-badge" id="timer-r12-kono">90s</span></div>
+        <div class="cam-body" id="wrap-r12-kono">
+          <img class="live-img" id="img-r12-kono" alt="国道12号">
+          <div class="img-overlay" id="ov-r12-kono"><div class="spinner"></div></div>
+        </div>
+        <div class="refresh-note">90秒更新 / 開発局</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">
+      <span class="accent-icon">🔺</span>
+      <h2>学校周辺・北広島・江別</h2>
+    </div>
+    <div class="grid">
+      <div class="cam-card">
+        <div class="cam-title"><span>栗山町上空 — 栗山町役場</span></div>
+        <div class="cam-body">
+          <div class="fallback-inner">
+            <p>下記をクリック</p>
+            <a class="open-btn" href="https://www.town.kuriyama.hokkaido.jp/livecam/" target="_blank">▶ ライブカメラを開く</a>
+          </div>
+        </div>
+        <div class="refresh-note">配信: 栗山町</div>
+      </div>
+
+      <div class="cam-card">
+        <div class="cam-title"><span>エスコンフィールド付近 — STV</span></div>
+        <div class="cam-body">
+          <iframe src="https://www.youtube.com/embed/C28jH3sU2M8?autoplay=1&mute=1" allowfullscreen></iframe>
+        </div>
+        <div class="refresh-note">YouTube / STV</div>
+      </div>
+
+      <div class="cam-card">
+        <div class="cam-title"><span>江別太 — 国道12号</span><span class="timer-badge" id="timer-r12-ebetsu">90s</span></div>
+        <div class="cam-body" id="wrap-r12-ebetsu">
+          <img class="live-img" id="img-r12-ebetsu" alt="国道12号江別">
+          <div class="img-overlay" id="ov-r12-ebetsu"><div class="spinner"></div></div>
+        </div>
+        <div class="refresh-note">90秒更新 / 開発局</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">
+      <span class="accent-icon">🔺</span>
+      <h2>公共交通・気象情報</h2>
     </div>
     <div class="info-grid">
-      <a href="https://mobile.jrhokkaido.co.jp/web01/" target="_blank" class="info-card">
-        <div class="info-icon jr-icon">🚃</div>
+      <a href="https://www3.jrhokkaido.co.jp/web01/" target="_blank" class="info-card">
+        <div class="info-icon" style="color:var(--jr-color)">🚃</div>
         <div class="info-content">
           <h3>JR北海道 運行情報</h3>
-          <p>札幌‐千歳、札幌‐岩見沢など</p>
+          <p>札幌・千歳・岩見沢方面</p>
         </div>
       </a>
 
-      <a href="https://www.chuo-bus.co.jp/support/unkou/" target="_blank" class="info-card">
-        <div class="info-icon bus-icon">🚌</div>
+      <a href="https://www.jma.go.jp/bosai/warning/#area_type=offices&area_code=016000" target="_blank" class="info-card">
+        <div class="info-icon" style="color:var(--weather-color)">⚠️</div>
+        <div class="info-content">
+          <h3>石狩・空知 警報</h3>
+          <p>気象庁 防災情報ページ</p>
+        </div>
+      </a>
+
+      <a href="https://www.chuo-bus.co.jp/unkou/" target="_blank" class="info-card">
+        <div class="info-icon" style="color:var(--bus-color)">🚌</div>
         <div class="info-content">
           <h3>北海道中央バス</h3>
-          <p>札幌‐栗山、江別方面など</p>
+          <p>都市間バス・路線バス</p>
         </div>
       </a>
 
-      <a href="https://www.jrhokkaidobus.com/service/" target="_blank" class="info-card">
-        <div class="info-icon bus-icon">🚌</div>
-        <div class="info-content">
-          <h3>JR北海道バス</h3>
-          <p>北広島、厚別エリアなど</p>
-        </div>
-      </a>
-      
       <a href="http://www.yutetsu.co.jp/bus.html" target="_blank" class="info-card">
-        <div class="info-icon bus-icon">🚌</div>
+        <div class="info-icon" style="color:var(--bus-color)">🚌</div>
         <div class="info-content">
           <h3>夕鉄バス</h3>
           <p>栗山・新さっぽろ方面</p>
         </div>
       </a>
-    </div>
-  </section>
 
-  <section class="section">
-    <div class="section-label">
-      <span class="accent-icon">🔺</span>
-      <h2>札幌中心部</h2>
-    </div>
-    <div class="grid">
-      <div class="cam-card">
-        <div class="cam-title">
-          <span>大通公園西4丁目 — STV</span>
-          <span class="timer-badge" id="timer-stv-odori">60s</span>
+      <a href="https://www.jrhokkaidobus.com/information/" target="_blank" class="info-card">
+        <div class="info-icon" style="color:var(--bus-color)">🚌</div>
+        <div class="info-content">
+          <h3>JR北海道バス</h3>
+          <p>北広島・厚別・札幌エリア</p>
         </div>
-        <div class="cam-body" id="wrap-stv-odori">
-          <img class="live-img" id="img-stv-odori" alt="STV大通公園">
-          <div class="img-overlay" id="ov-stv-odori"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">60秒自動更新 ／ 配信: STV</div>
-      </div>
-
-      <div class="cam-card">
-        <div class="cam-title">
-          <span>大通ビッセ — HBC</span>
-          <span class="timer-badge" id="timer-hbc-odori">60s</span>
-        </div>
-        <div class="cam-body" id="wrap-hbc-odori">
-          <img class="live-img" id="img-hbc-odori" alt="HBC大通ビッセ">
-          <div class="img-overlay" id="ov-hbc-odori"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">60秒自動更新 ／ 配信: HBC</div>
-      </div>
-
-      <div class="cam-card">
-        <div class="cam-title">
-          <span>JR札幌駅ホーム — HBC</span>
-          <span class="timer-badge" id="timer-hbc-jrsa">60s</span>
-        </div>
-        <div class="cam-body" id="wrap-hbc-jrsa">
-          <img class="live-img" id="img-hbc-jrsa" alt="HBC JR札幌駅">
-          <div class="img-overlay" id="ov-hbc-jrsa"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">60秒自動更新 ／ 配信: HBC</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-label">
-      <span class="accent-icon">🔺</span>
-      <h2>新さっぽろ周辺</h2>
-    </div>
-    <div class="grid">
-      <div class="cam-card">
-        <div class="cam-title">
-          <span>厚別区小野幌 — 国道12号</span>
-          <span class="timer-badge" id="timer-r12-kono">90s</span>
-        </div>
-        <div class="cam-body" id="wrap-r12-kono">
-          <img class="live-img" id="img-r12-kono" alt="国道12号小野幌">
-          <div class="img-overlay" id="ov-r12-kono"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">90秒自動更新 ／ 配信: 北海道開発局</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-label">
-      <span class="accent-icon">🔺</span>
-      <h2>学校周辺</h2>
-    </div>
-    <div class="grid">
-      <div class="cam-card">
-        <div class="cam-title">
-          <span>栗山町上空 — 栗山町役場</span>
-        </div>
-        <div class="cam-body" id="wrap-kuriyama">
-          <div class="fallback-inner">
-            <p>公式サイトの制限により表示できません</p>
-            <a class="open-btn" href="https://www.town.kuriyama.hokkaido.jp/livecam/" target="_blank" rel="noopener">▶ ライブカメラを開く</a>
-          </div>
-        </div>
-        <div class="refresh-note">配信: 栗山町役場</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-label">
-      <span class="accent-icon">🔺</span>
-      <h2>北広島・恵庭・江別</h2>
-    </div>
-    <div class="grid">
-      <div class="cam-card">
-        <div class="cam-title">
-          <span>エスコンフィールド付近 — STV</span>
-        </div>
-        <div class="cam-body">
-          <iframe src="https://www.youtube.com/embed/C28jH3sU2M8?autoplay=1&mute=1"
-            title="STV北広島" allowfullscreen></iframe>
-        </div>
-        <div class="refresh-note">動画ライブ ／ 配信: STV</div>
-      </div>
-
-      <div class="cam-card">
-        <div class="cam-title">
-          <span>恵庭市恵南 — 国道36号</span>
-          <span class="timer-badge" id="timer-r36-enami">90s</span>
-        </div>
-        <div class="cam-body" id="wrap-r36-enami">
-          <img class="live-img" id="img-r36-enami" alt="国道36号恵庭恵南">
-          <div class="img-overlay" id="ov-r36-enami"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">90秒自動更新 ／ 配信: 北海道開発局</div>
-      </div>
-
-      <div class="cam-card">
-        <div class="cam-title">
-          <span>江別太 — 国道12号</span>
-          <span class="timer-badge" id="timer-r12-ebetsu">90s</span>
-        </div>
-        <div class="cam-body" id="wrap-r12-ebetsu">
-          <img class="live-img" id="img-r12-ebetsu" alt="国道12号江別太">
-          <div class="img-overlay" id="ov-r12-ebetsu"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">90秒自動更新 ／ 配信: 北海道開発局</div>
-      </div>
+      </a>
     </div>
   </section>
 
@@ -361,15 +294,13 @@
 const CAMERAS = [
   { id:'stv-odori',   type:'img',  interval:60, src:'https://www.stv.jp/cameraimg/ohdori4_L.jpg' },
   { id:'hbc-odori',   type:'img',  interval:60, src:'https://www.hbc.co.jp/info-cam/media/sapporohd_720.jpg' },
-  { id:'hbc-jrsa',    type:'img',  interval:60, src:'https://www.hbc.co.jp/info-cam/media/jrsapporohd_720.jpg' },
   { id:'r12-kono',    type:'page', interval:90, pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200102.html' },
-  { id:'r36-enami',   type:'page', interval:90, pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118900103.html' },
   { id:'r12-ebetsu',  type:'page', interval:90, pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200110.html' },
 ];
 
 function loadImgCamera(cam) {
-  const img  = document.getElementById('img-' + cam.id);
-  const ov   = document.getElementById('ov-'  + cam.id);
+  const img = document.getElementById('img-' + cam.id);
+  const ov  = document.getElementById('ov-'  + cam.id);
   if (!img) return;
   const url = cam.src + '?_=' + Date.now();
   const tmp = new Image();
