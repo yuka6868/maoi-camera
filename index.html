@@ -1,358 +1,233 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>通学エリアライブカメラ</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通学エリア情報まとめ</title>
 
-    :root {
-      --bg: #f8fafc;
-      --panel: #ffffff;
-      --border: #e2e8f0;
-      --accent: #ef4444;
-      --text-main: #1e293b;
-      --text-sub: #64748b;
-      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-      --jr-color: #008000;
-      --bus-color: #2563eb;
-      --weather-color: #f59e0b;
-    }
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    body {
-      background: var(--bg);
-      color: var(--text-main);
-      font-family: 'Noto Sans JP', sans-serif;
-      line-height: 1.6;
-    }
+<style>
+:root{
+  --bg:#f8fafc;
+  --panel:#ffffff;
+  --border:#e2e8f0;
+  --accent:#ef4444;
+  --text-main:#1e293b;
+  --text-sub:#64748b;
+  --shadow:0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg);
+  font-family:'Noto Sans JP',sans-serif;
+  color:var(--text-main);
+}
+header{
+  padding:1.5rem;
+  background:#ffffff;
+  border-bottom:3px solid var(--accent);
+  text-align:center;
+  box-shadow:var(--shadow);
+  transition:0.3s;
+}
+header h1{font-size:1.6rem;}
+main{max-width:1200px;margin:0 auto;padding:1rem;}
+.section{margin-bottom:2.5rem;}
+.section-label{
+  display:flex;align-items:center;gap:0.5rem;
+  margin-bottom:1rem;padding-bottom:0.5rem;
+  border-bottom:2px solid var(--border);
+}
+.accent-icon{color:var(--accent);}
 
-    header {
-      padding: 1.5rem;
-      background: #ffffff;
-      border-bottom: 3px solid var(--accent);
-      text-align: center;
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow);
-    }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:1.2rem;
+}
+.cam-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 2px 4px rgba(0,0,0,0.05);
+}
+.cam-title{
+  padding:0.7rem 1rem;
+  font-weight:700;
+  font-size:0.9rem;
+  background:#f1f5f9;
+  border-bottom:1px solid var(--border);
+}
+.cam-body{
+  position:relative;
+  width:100%;
+  padding-top:56.25%;
+}
+.cam-body iframe,.cam-body img{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  border:none;
+}
+.refresh-note{
+  font-size:0.7rem;
+  color:var(--text-sub);
+  padding:0.4rem 1rem;
+  text-align:right;
+}
 
-    header h1 { font-size: 1.6rem; font-weight: 700; }
+/* 地図 */
+#camera-map{
+  width:100%;
+  height:420px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
 
-    main { max-width: 1200px; margin: 0 auto; padding: 0 1rem 3rem; }
-    .section { margin-bottom: 2.5rem; }
-
-    .section-label {
-      display: flex; align-items: center; gap: 0.5rem;
-      margin-bottom: 1.2rem; padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--border);
-    }
-
-    .section-label h2 { font-size: 1.1rem; font-weight: 700; }
-    .accent-icon { color: var(--accent); font-size: 1.1rem; }
-
-    /* ライブカメラグリッド */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.2rem; }
-
-    .cam-card {
-      background: var(--panel); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-      display: flex; flex-direction: column;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .cam-title {
-      padding: 0.7rem 1rem; font-weight: 700; font-size: 0.9rem;
-      background: #f1f5f9; border-bottom: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-
-    .timer-badge {
-      font-size: 0.7rem; color: #ffffff; background: var(--text-sub);
-      padding: 2px 8px; border-radius: 999px; min-width: 42px; text-align: center;
-    }
-
-    .cam-body {
-      position: relative; width: 100%; padding-top: 56.25%;
-      background: #e2e8f0; overflow: hidden;
-    }
-
-    .cam-body iframe, .cam-body img.live-img {
-      position: absolute; top:0; left:0; width:100%; height:100%;
-      border: none; object-fit: cover;
-    }
-
-    .img-overlay {
-      position: absolute; top:0; left:0; width:100%; height:100%;
-      display: flex; align-items: center; justify-content: center;
-      background: #f1f5f9; transition: opacity 0.4s; z-index: 2;
-    }
-    .img-overlay.hidden { opacity: 0; pointer-events: none; }
-
-    .spinner {
-      width: 24px; height: 24px; border: 3px solid var(--border);
-      border-top-color: var(--accent); border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .fallback-inner {
-      position: absolute; top:0; left:0; width:100%; height:100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 0.8rem; text-align: center; padding: 1rem; background: #f8fafc;
-    }
-
-    .open-btn {
-      display: inline-block; padding: 0.5rem 1.2rem;
-      background: var(--accent); color: #ffffff; text-decoration: none;
-      font-size: 0.85rem; font-weight: 700; border-radius: 6px;
-    }
-
-    .refresh-note {
-      font-size: 0.7rem; color: var(--text-sub);
-      padding: 0.4rem 1rem; text-align: right; background: #ffffff;
-    }
-
-    /* 情報カード共通スタイル */
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 0.8rem;
-    }
-
-    .info-card {
-      background: var(--panel); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1rem;
-      text-decoration: none; color: var(--text-main);
-      display: flex; align-items: center; gap: 0.8rem;
-      transition: all 0.2s;
-    }
-
-    .info-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-
-    .info-icon {
-      font-size: 1.5rem; width: 44px; height: 44px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 8px; background: #f1f5f9;
-    }
-
-    .info-content h3 { font-size: 0.9rem; margin-bottom: 0.1rem; }
-    .info-content p { font-size: 0.75rem; color: var(--text-sub); }
-
-    footer {
-      text-align: center; padding: 2rem;
-      font-size: 0.8rem; color: var(--text-sub);
-      border-top: 1px solid var(--border);
-    }
-
-    @media (max-width: 640px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-  </style>
+/* スマホ最適化 */
+@media(max-width:640px){
+  header h1{font-size:1.2rem;}
+  #camera-map{height:300px;}
+  .grid{grid-template-columns:1fr;}
+  main{padding:0.5rem;}
+}
+footer{
+  text-align:center;
+  padding:2rem;
+  font-size:0.8rem;
+  color:var(--text-sub);
+  border-top:1px solid var(--border);
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <h1>通学エリア情報まとめ</h1>
+<h1 id="page-title">通学エリア情報まとめ</h1>
 </header>
 
 <main>
 
-  <section class="section">
-    <div class="section-label">
-      <span class="accent-icon">🔺</span>
-      <h2>ライブカメラ：札幌・厚別</h2>
-    </div>
-    <div class="grid">
-      <div class="cam-card">
-        <div class="cam-title"><span>大通公園西4丁目</span><span class="timer-badge" id="timer-stv-odori">60s</span></div>
-        <div class="cam-body" id="wrap-stv-odori">
-          <img class="live-img" id="img-stv-odori" alt="STV大通公園">
-          <div class="img-overlay" id="ov-stv-odori"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">60秒更新 / STV</div>
-      </div>
+<!-- 地図 -->
+<section class="section">
+<div class="section-label">
+<span class="accent-icon">🗺️</span>
+<h2>ライブカメラ・交通マップ</h2>
+</div>
+<div id="camera-map"></div>
+</section>
 
-      <div class="cam-card">
-        <div class="cam-title"><span>大通ビッセ</span><span class="timer-badge" id="timer-hbc-odori">60s</span></div>
-        <div class="cam-body" id="wrap-hbc-odori">
-          <img class="live-img" id="img-hbc-odori" alt="HBC大通ビッセ">
-          <div class="img-overlay" id="ov-hbc-odori"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">60秒更新 / HBC</div>
-      </div>
+<!-- カメラ -->
+<section class="section">
+<div class="section-label">
+<span class="accent-icon">🔺</span>
+<h2>ライブカメラ</h2>
+</div>
+<div class="grid">
 
-      <div class="cam-card">
-        <div class="cam-title"><span>厚別区小野幌 — 国道12号</span><span class="timer-badge" id="timer-r12-kono">90s</span></div>
-        <div class="cam-body" id="wrap-r12-kono">
-          <img class="live-img" id="img-r12-kono" alt="国道12号">
-          <div class="img-overlay" id="ov-r12-kono"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">90秒更新 / 開発局</div>
-      </div>
-    </div>
-  </section>
+<div class="cam-card">
+<div class="cam-title">大通公園西4丁目 — STV</div>
+<div class="cam-body">
+<img src="https://www.stv.jp/cameraimg/ohdori4_L.jpg">
+</div>
+<div class="refresh-note">STV</div>
+</div>
 
-  <section class="section">
-    <div class="section-label">
-      <span class="accent-icon">🔺</span>
-      <h2>ライブカメラ：栗山・北広・江別</h2>
-    </div>
-    <div class="grid">
-      <div class="cam-card">
-        <div class="cam-title"><span>栗山町上空</span></div>
-        <div class="cam-body">
-          <div class="fallback-inner">
-            <p>下記をクリック</p>
-            <a class="open-btn" href="https://www.town.kuriyama.hokkaido.jp/livecam/" target="_blank">🔺 ライブカメラを開く</a>
-          </div>
-        </div>
-        <div class="refresh-note">配信: 栗山町役場</div>
-      </div>
+<div class="cam-card">
+<div class="cam-title">大通ビッセ — HBC</div>
+<div class="cam-body">
+<img src="https://www.hbc.co.jp/info-cam/media/sapporohd_720.jpg">
+</div>
+<div class="refresh-note">HBC</div>
+</div>
 
-      <div class="cam-card">
-        <div class="cam-title"><span>エスコンフィールド付近</span></div>
-        <div class="cam-body">
-          <iframe src="https://www.youtube.com/embed/C28jH3sU2M8?autoplay=1&mute=1" allowfullscreen></iframe>
-        </div>
-        <div class="refresh-note">YouTube / STV</div>
-      </div>
+<div class="cam-card">
+<div class="cam-title">エスコンフィールド付近 — STV</div>
+<div class="cam-body">
+<iframe src="https://www.youtube.com/embed/C28jH3sU2M8?autoplay=1&mute=1" allowfullscreen></iframe>
+</div>
+<div class="refresh-note">YouTube</div>
+</div>
 
-      <div class="cam-card">
-        <div class="cam-title"><span>江別太 — 国道12号</span><span class="timer-badge" id="timer-r12-ebetsu">90s</span></div>
-        <div class="cam-body" id="wrap-r12-ebetsu">
-          <img class="live-img" id="img-r12-ebetsu" alt="国道12号江別">
-          <div class="img-overlay" id="ov-r12-ebetsu"><div class="spinner"></div></div>
-        </div>
-        <div class="refresh-note">90秒更新 / 開発局</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-label">
-      <span class="accent-icon">🔺</span>
-      <h2>気象警報・防災情報</h2>
-    </div>
-    <div class="info-grid">
-      <a href="https://www.jma.go.jp/bosai/warning/#area_type=offices&area_code=016000" target="_blank" class="info-card" style="border-left: 5px solid var(--weather-color);">
-        <div class="info-icon" style="color:var(--weather-color)">⚠️</div>
-        <div class="info-content">
-          <h3>石狩・空知地方 警報</h3>
-          <p>気象庁：最新の防災警報を確認</p>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-label">
-      <span class="accent-icon">🔺</span>
-      <h2>交通機関 運行情報</h2>
-    </div>
-    <div class="info-grid">
-      <a href="https://www.jrhokkaido.co.jp/" target="_blank" class="info-card">
-        <div class="info-icon" style="color:var(--jr-color)">🚃</div>
-        <div class="info-content">
-          <h3>JR北海道</h3>
-          <p>列車運行情報・運休案内</p>
-        </div>
-      </a>
-
-      <a href="https://www.chuo-bus.co.jp/" target="_blank" class="info-card">
-        <div class="info-icon" style="color:var(--bus-color)">🚌</div>
-        <div class="info-content">
-          <h3>北海道中央バス</h3>
-          <p>バス運行情報・重要なお知らせ</p>
-        </div>
-      </a>
-
-      <a href="http://www.yutetsu.co.jp/bus.html" target="_blank" class="info-card">
-        <div class="info-icon" style="color:var(--bus-color)">🚌</div>
-        <div class="info-content">
-          <h3>夕鉄バス</h3>
-          <p>栗山・新さっぽろ方面</p>
-        </div>
-      </a>
-
-      <a href="https://www.jrhokkaidobus.com/" target="_blank" class="info-card">
-        <div class="info-icon" style="color:var(--bus-color)">🚌</div>
-        <div class="info-content">
-          <h3>JR北海道バス</h3>
-          <p>運行案内・ニュース</p>
-        </div>
-      </a>
-    </div>
-  </section>
+</div>
+</section>
 
 </main>
 
 <footer>
-  通学エリア情報まとめ — 配信元の都合により停止・変更される場合があります
+通学エリア情報まとめ — 配信元の都合により変更される場合があります
 </footer>
 
 <script>
-const CAMERAS = [
-  { id:'stv-odori',   type:'img',  interval:60, src:'https://www.stv.jp/cameraimg/ohdori4_L.jpg' },
-  { id:'hbc-odori',   type:'img',  interval:60, src:'https://www.hbc.co.jp/info-cam/media/sapporohd_720.jpg' },
-  { id:'r12-kono',    type:'page', interval:90, pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200102.html' },
-  { id:'r12-ebetsu',  type:'page', interval:90, pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200110.html' },
+// ===== 地図初期化 =====
+const map = L.map('camera-map').setView([43.06,141.35],10);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+ attribution:'© OpenStreetMap contributors'
+}).addTo(map);
+
+// 通常カメラマーカー
+const cameraPoints=[
+ {name:"大通公園西4丁目",lat:43.0608,lng:141.3515},
+ {name:"エスコンフィールド",lat:42.9785,lng:141.4734}
 ];
 
-function loadImgCamera(cam) {
-  const img = document.getElementById('img-' + cam.id);
-  const ov  = document.getElementById('ov-'  + cam.id);
-  if (!img) return;
-  const url = cam.src + '?_=' + Date.now();
-  const tmp = new Image();
-  tmp.onload = () => { img.src = url; ov && ov.classList.add('hidden'); };
-  tmp.src = url;
-}
-
-async function loadPageCamera(cam) {
-  const ov = document.getElementById('ov-' + cam.id);
-  const img = document.getElementById('img-' + cam.id);
-  if (!img) return;
-  const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(cam.pageUrl);
-  try {
-    const res  = await fetch(proxyUrl);
-    const json = await res.json();
-    const html = json.contents || '';
-    const match = html.match(/src=["']([^"']*\.jpg[^"']*)/i);
-    if (match) {
-      let imgSrc = match[1];
-      if (imgSrc.startsWith('/')) imgSrc = 'https://www.road-info-prvs.mlit.go.jp' + imgSrc;
-      const imgProxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(imgSrc + '?_=' + Date.now());
-      const tmp = new Image();
-      tmp.onload = () => { img.src = imgProxy; ov && ov.classList.add('hidden'); };
-      tmp.src = imgProxy;
-    }
-  } catch (e) {}
-}
-
-function startTimer(cam) {
-  const badge = document.getElementById('timer-' + cam.id);
-  if (!badge) return;
-  let remaining = cam.interval;
-  setInterval(() => {
-    remaining--;
-    badge.textContent = remaining + 's';
-    if (remaining <= 0) {
-      remaining = cam.interval;
-      if (cam.type === 'img') loadImgCamera(cam);
-      else loadPageCamera(cam);
-    }
-  }, 1000);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  CAMERAS.forEach(cam => {
-    if (cam.type === 'img')  loadImgCamera(cam);
-    else                     loadPageCamera(cam);
-    startTimer(cam);
-  });
+cameraPoints.forEach(p=>{
+ L.marker([p.lat,p.lng]).addTo(map)
+  .bindPopup("<b>"+p.name+"</b>");
 });
+
+// JR / バスアイコン
+const jrIcon=L.icon({
+ iconUrl:"https://cdn-icons-png.flaticon.com/512/854/854878.png",
+ iconSize:[28,28]
+});
+const busIcon=L.icon({
+ iconUrl:"https://cdn-icons-png.flaticon.com/512/61/61231.png",
+ iconSize:[28,28]
+});
+
+const transportPoints=[
+ {name:"札幌駅",lat:43.0687,lng:141.3508,type:"jr"},
+ {name:"新さっぽろ駅",lat:43.0382,lng:141.4725,type:"jr"},
+ {name:"北広島駅",lat:42.9794,lng:141.5677,type:"jr"},
+ {name:"中央バス",lat:43.0605,lng:141.3530,type:"bus"}
+];
+
+transportPoints.forEach(p=>{
+ L.marker([p.lat,p.lng],{
+  icon:p.type==="jr"?jrIcon:busIcon
+ }).addTo(map)
+  .bindPopup("<b>"+p.name+"</b>");
+});
+
+// ===== 大雪警報チェック =====
+async function checkSnowWarning(){
+ try{
+  const res=await fetch("https://www.jma.go.jp/bosai/warning/data/warning/016000.json");
+  const data=await res.json();
+  const text=JSON.stringify(data);
+
+  if(text.includes("大雪")){
+    const header=document.querySelector("header");
+    header.style.background="#b91c1c";
+    header.style.color="#ffffff";
+    document.getElementById("page-title").innerText="⚠ 大雪警報発令中";
+  }
+ }catch(e){}
+}
+checkSnowWarning();
+
 </script>
 
 </body>
