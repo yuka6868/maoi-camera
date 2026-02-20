@@ -233,45 +233,14 @@
       <h2>気象情報</h2>
     </div>
 
-    <!-- 防災リンク -->
-    <div class="info-grid" style="margin-bottom:1.2rem;">
-      <a href="https://www.jma.go.jp/bosai/warning/#area_type=offices&area_code=016000" target="_blank" class="info-card" style="border-left: 5px solid var(--weather-color);">
-        <div class="info-icon" style="color:var(--weather-color)">⚠️</div>
-        <div class="info-content">
-          <h3>石狩・空知地方 警報</h3>
-          <p>気象庁：最新の防災警報を確認</p>
-        </div>
-      </a>
-      <a href="https://www.jma.go.jp/bosai/nowc/" target="_blank" class="info-card" style="border-left: 5px solid #38bdf8;">
-        <div class="info-icon" style="color:#38bdf8">🌧️</div>
-        <div class="info-content">
-          <h3>雨雲・雷・竜巻ナウキャスト</h3>
-          <p>気象庁：インタラクティブ雨雲レーダー</p>
-        </div>
-      </a>
+    <div class="info-grid">
       <a href="https://tenki.jp/radar/1/2/" target="_blank" class="info-card" style="border-left: 5px solid #38bdf8;">
-        <div class="info-icon" style="color:#38bdf8">🗺️</div>
+        <div class="info-icon" style="color:#38bdf8">🌧️</div>
         <div class="info-content">
           <h3>道央 雨雲レーダー（tenki.jp）</h3>
           <p>札幌・江別・北広島エリアを確認</p>
         </div>
       </a>
-    </div>
-
-    <!-- 雨雲レーダー -->
-    <div class="cam-card" style="max-width:100%;">
-      <div class="cam-title">
-        <span>🌧️ 雨雲レーダー（道央・札幌周辺）</span>
-        <span class="timer-badge" id="timer-radar">5m</span>
-      </div>
-      <div class="cam-body" id="wrap-radar" style="padding-top: 65%;">
-        <img class="live-img" id="img-radar" alt="雨雲レーダー（気象庁）">
-        <div class="img-overlay" id="ov-radar"><div class="spinner"></div></div>
-      </div>
-      <div class="refresh-note" style="display:flex; justify-content:space-between; align-items:center; padding: 0.5rem 1rem;">
-        <span style="font-size:0.75rem; color:var(--text-sub);">5分更新 / 気象庁 高解像度降水ナウキャスト</span>
-        <a href="https://www.jma.go.jp/bosai/nowc/" target="_blank" style="font-size:0.75rem; color:var(--accent); font-weight:700; text-decoration:none;">▶ 気象庁で詳細を見る</a>
-      </div>
     </div>
   </section>
 
@@ -326,46 +295,6 @@ const CAMERAS = [
   { id:'hbc-odori', type:'img', interval:60, src:'https://www.hbc.co.jp/info-cam/media/sapporohd_720.jpg' },
 ];
 
-// ===== 雨雲レーダー（気象庁ナウキャスト） =====
-async function loadRadar() {
-  const img = document.getElementById('img-radar');
-  const ov  = document.getElementById('ov-radar');
-  if (!img) return;
-  try {
-    const res  = await fetch('https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json');
-    const data = await res.json();
-    const base = data[0].basetime; // 最新時刻
-    // 道央エリア（タイル z=6, x=56, y=24 付近）のタイル画像
-    const url  = `https://www.jma.go.jp/bosai/jmatile/data/nowc/${base}/none/${base}/surf/nowc/6/56/24.png?t=${Date.now()}`;
-    const tmp  = new Image();
-    tmp.onload  = () => { img.src = url; ov && ov.classList.add('hidden'); };
-    tmp.onerror = () => loadRadarFallback();
-    tmp.src = url;
-  } catch(e) { loadRadarFallback(); }
-}
-
-function loadRadarFallback() {
-  const wrap = document.getElementById('wrap-radar');
-  if (!wrap) return;
-  wrap.innerHTML = `<div class="fallback-inner">
-    <p style="font-size:0.85rem; color:#64748b;">下記から雨雲レーダーをご確認ください</p>
-    <a class="open-btn" href="https://www.jma.go.jp/bosai/nowc/" target="_blank">🌧️ 気象庁ナウキャストを開く</a>
-    <a class="open-btn" href="https://tenki.jp/radar/1/2/" target="_blank" style="background:#0ea5e9; margin-top:0.4rem;">🗺️ tenki.jp 道央レーダー</a>
-  </div>`;
-}
-
-function startRadarTimer() {
-  const badge = document.getElementById('timer-radar');
-  if (!badge) return;
-  let rem = 300;
-  const fmt = s => s >= 60 ? Math.ceil(s/60) + 'm' : s + 's';
-  setInterval(() => {
-    rem--;
-    badge.textContent = fmt(rem);
-    if (rem <= 0) { rem = 300; loadRadar(); }
-  }, 1000);
-}
-
 function loadImgCamera(cam) {
   const img = document.getElementById('img-' + cam.id);
   const ov  = document.getElementById('ov-'  + cam.id);
@@ -400,8 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadImgCamera(cam);
     startTimer(cam);
   });
-  loadRadar();
-  startRadarTimer();
 });
 </script>
 
