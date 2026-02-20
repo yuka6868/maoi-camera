@@ -38,11 +38,7 @@
       box-shadow: var(--shadow);
     }
 
-    header h1 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
+    header h1 { font-size: 1.6rem; font-weight: 700; }
 
     main { max-width: 1200px; margin: 0 auto; padding: 0 1rem 3rem; }
     .section { margin-bottom: 2.5rem; }
@@ -53,10 +49,7 @@
       border-bottom: 2px solid var(--border);
     }
 
-    .section-label h2 {
-      font-size: 1.1rem; font-weight: 700; color: var(--text-main);
-    }
-
+    .section-label h2 { font-size: 1.1rem; font-weight: 700; }
     .accent-icon { color: var(--accent); font-size: 1.1rem; }
 
     /* ライブカメラグリッド */
@@ -109,6 +102,7 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 0.8rem; text-align: center; padding: 1rem; background: #f8fafc;
     }
+
     .open-btn {
       display: inline-block; padding: 0.5rem 1.2rem;
       background: var(--accent); color: #ffffff; text-decoration: none;
@@ -160,7 +154,7 @@
 <body>
 
 <header>
-  <h1>通学エリアライブカメラ</h1>
+  <h1>通学エリア情報まとめ</h1>
 </header>
 
 <main>
@@ -168,7 +162,7 @@
   <section class="section">
     <div class="section-label">
       <span class="accent-icon">🔺</span>
-      <h2>札幌・新さっぽろ周辺</h2>
+      <h2>ライブカメラ：札幌・新さっぽろ周辺</h2>
     </div>
     <div class="grid">
       <div class="cam-card">
@@ -203,18 +197,18 @@
   <section class="section">
     <div class="section-label">
       <span class="accent-icon">🔺</span>
-      <h2>学校周辺・北広島・江別</h2>
+      <h2>ライブカメラ：学校周辺・北広島・江別</h2>
     </div>
     <div class="grid">
       <div class="cam-card">
         <div class="cam-title"><span>栗山町上空 — 栗山町役場</span></div>
         <div class="cam-body">
           <div class="fallback-inner">
-            <p>下記をクリック</p>
-            <a class="open-btn" href="https://www.town.kuriyama.hokkaido.jp/livecam/" target="_blank">▶ ライブカメラを開く</a>
+            <p>公式サイトの制限により表示できません</p>
+            <a class="open-btn" href="https://www.town.kuriyama.hokkaido.jp/livecam/" target="_blank">🔺 ライブカメラを開く</a>
           </div>
         </div>
-        <div class="refresh-note">配信: 栗山町</div>
+        <div class="refresh-note">配信: 栗山町役場</div>
       </div>
 
       <div class="cam-card">
@@ -239,10 +233,10 @@
   <section class="section">
     <div class="section-label">
       <span class="accent-icon">🔺</span>
-      <h2>公共交通・気象情報</h2>
+      <h2>交通機関 運行情報</h2>
     </div>
     <div class="info-grid">
-      <a href="https://www3.jrhokkaido.co.jp/web01/" target="_blank" class="info-card">
+      <a href="https://www.jrhokkaido.co.jp/" target="_blank" class="info-card">
         <div class="info-icon" style="color:var(--jr-color)">🚃</div>
         <div class="info-content">
           <h3>JR北海道 運行情報</h3>
@@ -250,19 +244,11 @@
         </div>
       </a>
 
-      <a href="https://www.jma.go.jp/bosai/warning/#area_type=offices&area_code=016000" target="_blank" class="info-card">
-        <div class="info-icon" style="color:var(--weather-color)">⚠️</div>
-        <div class="info-content">
-          <h3>石狩・空知 警報</h3>
-          <p>気象庁 防災情報ページ</p>
-        </div>
-      </a>
-
-      <a href="https://www.chuo-bus.co.jp/unkou/" target="_blank" class="info-card">
+      <a href="https://www.chuo-bus.co.jp/information/" target="_blank" class="info-card">
         <div class="info-icon" style="color:var(--bus-color)">🚌</div>
         <div class="info-content">
           <h3>北海道中央バス</h3>
-          <p>都市間バス・路線バス</p>
+          <p>都市間・路線バス 運行案内</p>
         </div>
       </a>
 
@@ -284,10 +270,26 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="section-label">
+      <span class="accent-icon">🔺</span>
+      <h2>気象警報・防災情報</h2>
+    </div>
+    <div class="info-grid">
+      <a href="https://www.jma.go.jp/bosai/warning/#area_type=offices&area_code=016000" target="_blank" class="info-card" style="border-left: 5px solid var(--weather-color);">
+        <div class="info-icon" style="color:var(--weather-color)">⚠️</div>
+        <div class="info-content">
+          <h3>石狩・空知地方 警報</h3>
+          <p>気象庁 防災情報ページ</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
 </main>
 
 <footer>
-  通学エリアライブカメラ — 配信元の都合により停止・変更される場合があります
+  通学エリア情報まとめ — 配信元の都合により停止・変更される場合があります
 </footer>
 
 <script>
