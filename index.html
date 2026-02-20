@@ -114,7 +114,7 @@
       padding: 0.4rem 1rem; text-align: right; background: #ffffff;
     }
 
-    /* 運行情報・気象情報のスタイル */
+    /* 情報カード共通スタイル */
     .info-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -204,7 +204,7 @@
         <div class="cam-title"><span>栗山町上空 — 栗山町役場</span></div>
         <div class="cam-body">
           <div class="fallback-inner">
-            <p>公式サイトの制限により表示できません</p>
+            <p>下記をクリック</p>
             <a class="open-btn" href="https://www.town.kuriyama.hokkaido.jp/livecam/" target="_blank">🔺 ライブカメラを開く</a>
           </div>
         </div>
@@ -233,22 +233,38 @@
   <section class="section">
     <div class="section-label">
       <span class="accent-icon">🔺</span>
+      <h2>気象警報・防災情報</h2>
+    </div>
+    <div class="info-grid">
+      <a href="https://www.jma.go.jp/bosai/warning/#area_type=offices&area_code=016000" target="_blank" class="info-card" style="border-left: 5px solid var(--weather-color);">
+        <div class="info-icon" style="color:var(--weather-color)">⚠️</div>
+        <div class="info-content">
+          <h3>石狩・空知地方 警報</h3>
+          <p>気象庁：最新の防災警報を確認</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">
+      <span class="accent-icon">🔺</span>
       <h2>交通機関 運行情報</h2>
     </div>
     <div class="info-grid">
       <a href="https://www.jrhokkaido.co.jp/" target="_blank" class="info-card">
         <div class="info-icon" style="color:var(--jr-color)">🚃</div>
         <div class="info-content">
-          <h3>JR北海道 運行情報</h3>
-          <p>札幌・千歳・岩見沢方面</p>
+          <h3>JR北海道</h3>
+          <p>列車運行情報・運休案内</p>
         </div>
       </a>
 
-      <a href="https://www.chuo-bus.co.jp/information/" target="_blank" class="info-card">
+      <a href="https://www.chuo-bus.co.jp/" target="_blank" class="info-card">
         <div class="info-icon" style="color:var(--bus-color)">🚌</div>
         <div class="info-content">
           <h3>北海道中央バス</h3>
-          <p>都市間・路線バス 運行案内</p>
+          <p>バス運行情報・重要なお知らせ</p>
         </div>
       </a>
 
@@ -260,27 +276,11 @@
         </div>
       </a>
 
-      <a href="https://www.jrhokkaidobus.com/information/" target="_blank" class="info-card">
+      <a href="https://www.jrhokkaidobus.com/" target="_blank" class="info-card">
         <div class="info-icon" style="color:var(--bus-color)">🚌</div>
         <div class="info-content">
           <h3>JR北海道バス</h3>
-          <p>北広島・厚別・札幌エリア</p>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-label">
-      <span class="accent-icon">🔺</span>
-      <h2>気象警報・防災情報</h2>
-    </div>
-    <div class="info-grid">
-      <a href="https://www.jma.go.jp/bosai/warning/#area_type=offices&area_code=016000" target="_blank" class="info-card" style="border-left: 5px solid var(--weather-color);">
-        <div class="info-icon" style="color:var(--weather-color)">⚠️</div>
-        <div class="info-content">
-          <h3>石狩・空知地方 警報</h3>
-          <p>気象庁 防災情報ページ</p>
+          <p>運行案内・ニュース</p>
         </div>
       </a>
     </div>
