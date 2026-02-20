@@ -3,112 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>北海道ライブカメラ</title>
+  <title>通学エリアライブカメラ</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Share+Tech+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 
     :root {
-      --bg: #0a0e1a;
-      --panel: #111827;
-      --border: #1e3a5f;
-      --accent: #00aaff;
-      --accent2: #00ffcc;
-      --text: #c8d8e8;
-      --muted: #4a6a8a;
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --border: #e2e8f0;
+      --accent: #ef4444; /* 🔺アクセントカラー */
+      --text-main: #1e293b;
+      --text-sub: #64748b;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
-      color: var(--text);
+      color: var(--text-main);
       font-family: 'Noto Sans JP', sans-serif;
-      font-weight: 300;
-      min-height: 100vh;
+      line-height: 1.6;
     }
 
     header {
-      padding: 2.5rem 2rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: flex-end;
-      gap: 1.5rem;
-      background: linear-gradient(180deg, #050810 0%, var(--bg) 100%);
+      padding: 2rem;
+      background: #ffffff;
+      border-bottom: 3px solid var(--accent);
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
     }
 
     header h1 {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1.4rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: 0.05em;
     }
 
-    header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; }
-
-    .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent2);
-      box-shadow: 0 0 8px var(--accent2);
-      animation: pulse 2s infinite;
-      flex-shrink: 0;
-      margin-bottom: 4px;
-    }
-
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-    main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+    main { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 3rem; }
     .section { margin-bottom: 3rem; }
 
     .section-label {
-      display: flex; align-items: center; gap: 0.75rem;
-      margin-bottom: 1.25rem; padding-bottom: 0.6rem;
-      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 1.5rem; padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
     }
 
     .section-label h2 {
-      font-size: 0.8rem; font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 0.2em; color: var(--accent);
-      text-transform: uppercase; white-space: nowrap;
+      font-size: 1.2rem; font-weight: 700; color: var(--text-main);
     }
 
-    .section-label .line { flex:1; height:1px; background: linear-gradient(90deg, var(--border), transparent); }
+    .accent-icon { color: var(--accent); font-size: 1.2rem; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 1.25rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem; }
 
     .cam-card {
       background: var(--panel); border: 1px solid var(--border);
-      border-radius: 4px; overflow: hidden;
+      border-radius: 12px; overflow: hidden;
       display: flex; flex-direction: column;
-      transition: border-color 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
     }
-    .cam-card:hover { border-color: var(--accent); }
+    .cam-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 
     .cam-title {
-      padding: 0.6rem 0.9rem; font-size: 0.72rem; color: var(--muted);
-      letter-spacing: 0.08em; border-bottom: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1rem; font-weight: 700; font-size: 0.95rem;
+      background: #f1f5f9; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
     }
-    .cam-title span { color: var(--text); font-size: 0.8rem; }
-    .cam-title-right { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
-
-    .ext-link {
-      font-size: 0.65rem; color: var(--accent); text-decoration: none;
-      border: 1px solid var(--accent); padding: 2px 8px; border-radius: 2px;
-      letter-spacing: 0.05em; transition: background 0.2s, color 0.2s; white-space: nowrap;
-    }
-    .ext-link:hover { background: var(--accent); color: var(--bg); }
 
     .timer-badge {
-      font-family: 'Share Tech Mono', monospace; font-size: 0.62rem;
-      color: var(--accent2); background: rgba(0,255,204,0.08);
-      border: 1px solid rgba(0,255,204,0.2); padding: 2px 6px;
-      border-radius: 2px; min-width: 42px; text-align: center;
+      font-size: 0.75rem; color: #ffffff; background: var(--text-sub);
+      padding: 2px 8px; border-radius: 999px; min-width: 45px; text-align: center;
     }
 
     .cam-body {
       position: relative; width: 100%; padding-top: 56.25%;
-      background: #050810; overflow: hidden;
+      background: #e2e8f0; overflow: hidden;
     }
 
     .cam-body iframe,
@@ -119,364 +92,248 @@
 
     .img-overlay {
       position: absolute; top:0; left:0; width:100%; height:100%;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 0.5rem;
-      background: #050810; transition: opacity 0.4s;
-      pointer-events: none; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      background: #f1f5f9; transition: opacity 0.4s; z-index: 2;
     }
-    .img-overlay.hidden { opacity: 0; }
+    .img-overlay.hidden { opacity: 0; pointer-events: none; }
 
     .spinner {
-      width: 28px; height: 28px; border: 2px solid var(--border);
+      width: 24px; height: 24px; border: 3px solid var(--border);
       border-top-color: var(--accent); border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .img-overlay p { font-size: 0.65rem; color: var(--muted); font-family: 'Share Tech Mono', monospace; }
 
     .fallback-inner {
       position: absolute; top:0; left:0; width:100%; height:100%;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 1rem; text-align: center; padding: 1.5rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.8rem; text-align: center; padding: 1rem; background: #f8fafc;
     }
-    .fallback-inner p { font-size: 0.72rem; color: var(--muted); line-height: 1.7; }
+    .fallback-inner p { font-size: 0.8rem; color: var(--text-sub); font-weight: 500; }
+    
     .open-btn {
-      display: inline-block; padding: 0.55rem 1.4rem;
-      background: transparent; border: 1px solid var(--accent2);
-      color: var(--accent2); text-decoration: none;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem; letter-spacing: 0.1em; border-radius: 2px;
-      transition: background 0.2s, color 0.2s;
+      display: inline-block; padding: 0.5rem 1.2rem;
+      background: var(--accent); color: #ffffff; text-decoration: none;
+      font-size: 0.85rem; font-weight: 700; border-radius: 6px;
+      transition: opacity 0.2s;
     }
-    .open-btn:hover { background: var(--accent2); color: var(--bg); }
+    .open-btn:hover { opacity: 0.8; }
 
     .refresh-note {
-      font-size: 0.62rem; color: var(--muted);
-      padding: 0.35rem 0.9rem; text-align: right;
-      letter-spacing: 0.05em; border-top: 1px solid var(--border);
+      font-size: 0.75rem; color: var(--text-sub);
+      padding: 0.5rem 1rem; text-align: right; background: #ffffff;
     }
 
     footer {
       text-align: center; padding: 2rem;
-      font-size: 0.65rem; color: var(--muted);
-      border-top: 1px solid var(--border); letter-spacing: 0.1em;
+      font-size: 0.8rem; color: var(--text-sub);
+      border-top: 1px solid var(--border);
     }
 
     @media (max-width: 640px) {
       .grid { grid-template-columns: 1fr; }
-      header h1 { font-size: 1rem; }
+      header h1 { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="dot"></div>
-  <div>
-    <h1>HOKKAIDO LIVE CAM</h1>
-    <p>北海道ライブカメラ一覧</p>
-  </div>
+  <h1>通学エリアライブカメラ</h1>
 </header>
 
 <main>
 
-  <!-- ===== 札幌中心部 ===== -->
   <section class="section">
     <div class="section-label">
-      <h2>札幌中心部 / Sapporo Center</h2>
-      <div class="line"></div>
+      <span class="accent-icon">🔺</span>
+      <h2>札幌中心部</h2>
     </div>
     <div class="grid">
-
       <div class="cam-card">
         <div class="cam-title">
           <span>大通公園西4丁目 — STV</span>
-          <div class="cam-title-right">
-            <span class="timer-badge" id="timer-stv-odori">60s</span>
-            <a class="ext-link" href="https://www.stv.jp/webcam/ohdori4/index.html" target="_blank" rel="noopener">別窓</a>
-          </div>
+          <span class="timer-badge" id="timer-stv-odori">60s</span>
         </div>
         <div class="cam-body" id="wrap-stv-odori">
           <img class="live-img" id="img-stv-odori" alt="STV大通公園">
-          <div class="img-overlay" id="ov-stv-odori"><div class="spinner"></div><p>LOADING...</p></div>
+          <div class="img-overlay" id="ov-stv-odori"><div class="spinner"></div></div>
         </div>
-        <div class="refresh-note">静止画・60秒自動更新 ／ 配信: STV</div>
+        <div class="refresh-note">60秒自動更新 ／ 配信: STV</div>
       </div>
 
       <div class="cam-card">
         <div class="cam-title">
           <span>大通ビッセ — HBC</span>
-          <div class="cam-title-right">
-            <span class="timer-badge" id="timer-hbc-odori">60s</span>
-            <a class="ext-link" href="https://www.hbc.co.jp/info-cam/sapporo.html" target="_blank" rel="noopener">別窓</a>
-          </div>
+          <span class="timer-badge" id="timer-hbc-odori">60s</span>
         </div>
         <div class="cam-body" id="wrap-hbc-odori">
           <img class="live-img" id="img-hbc-odori" alt="HBC大通ビッセ">
-          <div class="img-overlay" id="ov-hbc-odori"><div class="spinner"></div><p>LOADING...</p></div>
+          <div class="img-overlay" id="ov-hbc-odori"><div class="spinner"></div></div>
         </div>
-        <div class="refresh-note">静止画・60秒自動更新 ／ 配信: HBC</div>
+        <div class="refresh-note">60秒自動更新 ／ 配信: HBC</div>
       </div>
 
       <div class="cam-card">
         <div class="cam-title">
           <span>JR札幌駅ホーム — HBC</span>
-          <div class="cam-title-right">
-            <span class="timer-badge" id="timer-hbc-jrsa">60s</span>
-            <a class="ext-link" href="https://www.hbc.co.jp/info-cam/jrsapporosta.html" target="_blank" rel="noopener">別窓</a>
-          </div>
+          <span class="timer-badge" id="timer-hbc-jrsa">60s</span>
         </div>
         <div class="cam-body" id="wrap-hbc-jrsa">
           <img class="live-img" id="img-hbc-jrsa" alt="HBC JR札幌駅">
-          <div class="img-overlay" id="ov-hbc-jrsa"><div class="spinner"></div><p>LOADING...</p></div>
+          <div class="img-overlay" id="ov-hbc-jrsa"><div class="spinner"></div></div>
         </div>
-        <div class="refresh-note">静止画・60秒自動更新 ／ 配信: HBC</div>
+        <div class="refresh-note">60秒自動更新 ／ 配信: HBC</div>
       </div>
-
     </div>
   </section>
 
-  <!-- ===== 新さっぽろ周辺 ===== -->
   <section class="section">
     <div class="section-label">
-      <h2>新さっぽろ周辺 / Shin-Sapporo Area</h2>
-      <div class="line"></div>
+      <span class="accent-icon">🔺</span>
+      <h2>新さっぽろ周辺</h2>
     </div>
     <div class="grid">
-
       <div class="cam-card">
         <div class="cam-title">
           <span>厚別区小野幌 — 国道12号</span>
-          <div class="cam-title-right">
-            <span class="timer-badge" id="timer-r12-kono">90s</span>
-            <a class="ext-link" href="https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200102.html" target="_blank" rel="noopener">別窓</a>
-          </div>
+          <span class="timer-badge" id="timer-r12-kono">90s</span>
         </div>
         <div class="cam-body" id="wrap-r12-kono">
           <img class="live-img" id="img-r12-kono" alt="国道12号小野幌">
-          <div class="img-overlay" id="ov-r12-kono"><div class="spinner"></div><p>LOADING...</p></div>
+          <div class="img-overlay" id="ov-r12-kono"><div class="spinner"></div></div>
         </div>
-        <div class="refresh-note">静止画・90秒自動更新 ／ 配信: 北海道開発局</div>
+        <div class="refresh-note">90秒自動更新 ／ 配信: 北海道開発局</div>
       </div>
-
     </div>
   </section>
 
-  <!-- ===== 学校周辺 ===== -->
   <section class="section">
     <div class="section-label">
-      <h2>学校周辺 / School Area</h2>
-      <div class="line"></div>
+      <span class="accent-icon">🔺</span>
+      <h2>学校周辺</h2>
     </div>
     <div class="grid">
-
       <div class="cam-card">
         <div class="cam-title">
           <span>栗山町上空 — 栗山町役場</span>
-          <div class="cam-title-right">
-            <a class="ext-link" href="https://www.town.kuriyama.hokkaido.jp/livecam/" target="_blank" rel="noopener">別窓</a>
-          </div>
         </div>
-        <div class="cam-body">
-          <iframe src="https://www.town.kuriyama.hokkaido.jp/livecam/" title="栗山町ライブカメラ" loading="lazy" allowfullscreen></iframe>
+        <div class="cam-body" id="wrap-kuriyama">
+          <div class="fallback-inner">
+            <p>公式サイトの制限により表示できません</p>
+            <a class="open-btn" href="https://www.town.kuriyama.hokkaido.jp/livecam/" target="_blank" rel="noopener">▶ ライブカメラを開く</a>
+          </div>
         </div>
         <div class="refresh-note">配信: 栗山町役場</div>
       </div>
-
     </div>
   </section>
 
-  <!-- ===== 北広島・恵庭・江別 ===== -->
   <section class="section">
     <div class="section-label">
-      <h2>北広島・恵庭・江別 / Kitahiroshima · Eniwa · Ebetsu</h2>
-      <div class="line"></div>
+      <span class="accent-icon">🔺</span>
+      <h2>北広島・恵庭・江別</h2>
     </div>
     <div class="grid">
-
       <div class="cam-card">
         <div class="cam-title">
-          <span>北広島市役所・エスコンフィールド — STV</span>
-          <div class="cam-title-right">
-            <a class="ext-link" href="https://www.youtube.com/watch?v=C28jH3sU2M8" target="_blank" rel="noopener">別窓</a>
-          </div>
+          <span>エスコンフィールド付近 — STV</span>
         </div>
         <div class="cam-body">
           <iframe src="https://www.youtube.com/embed/C28jH3sU2M8?autoplay=1&mute=1"
-            title="STV北広島ライブカメラ"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            loading="lazy" allowfullscreen></iframe>
+            title="STV北広島" allowfullscreen></iframe>
         </div>
-        <div class="refresh-note">動画ライブ配信 ／ 配信: STV / YouTube</div>
+        <div class="refresh-note">動画ライブ ／ 配信: STV</div>
       </div>
 
       <div class="cam-card">
         <div class="cam-title">
           <span>恵庭市恵南 — 国道36号</span>
-          <div class="cam-title-right">
-            <span class="timer-badge" id="timer-r36-enami">90s</span>
-            <a class="ext-link" href="https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118900103.html" target="_blank" rel="noopener">別窓</a>
-          </div>
+          <span class="timer-badge" id="timer-r36-enami">90s</span>
         </div>
         <div class="cam-body" id="wrap-r36-enami">
           <img class="live-img" id="img-r36-enami" alt="国道36号恵庭恵南">
-          <div class="img-overlay" id="ov-r36-enami"><div class="spinner"></div><p>LOADING...</p></div>
+          <div class="img-overlay" id="ov-r36-enami"><div class="spinner"></div></div>
         </div>
-        <div class="refresh-note">静止画・90秒自動更新 ／ 配信: 北海道開発局</div>
+        <div class="refresh-note">90秒自動更新 ／ 配信: 北海道開発局</div>
       </div>
 
       <div class="cam-card">
         <div class="cam-title">
           <span>江別太 — 国道12号</span>
-          <div class="cam-title-right">
-            <span class="timer-badge" id="timer-r12-ebetsu">90s</span>
-            <a class="ext-link" href="https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200110.html" target="_blank" rel="noopener">別窓</a>
-          </div>
+          <span class="timer-badge" id="timer-r12-ebetsu">90s</span>
         </div>
         <div class="cam-body" id="wrap-r12-ebetsu">
           <img class="live-img" id="img-r12-ebetsu" alt="国道12号江別太">
-          <div class="img-overlay" id="ov-r12-ebetsu"><div class="spinner"></div><p>LOADING...</p></div>
+          <div class="img-overlay" id="ov-r12-ebetsu"><div class="spinner"></div></div>
         </div>
-        <div class="refresh-note">静止画・90秒自動更新 ／ 配信: 北海道開発局</div>
+        <div class="refresh-note">90秒自動更新 ／ 配信: 北海道開発局</div>
       </div>
-
     </div>
   </section>
 
 </main>
 
 <footer>
-  HOKKAIDO LIVE CAM — 各カメラは配信元の都合により停止・変更される場合があります
+  通学エリアライブカメラ — 配信元の都合により停止・変更される場合があります
 </footer>
 
 <script>
-// ============================================================
-// カメラ定義
-// type: 'img'  → 静止画URLを直接 <img> に読み込み（定期更新）
-// type: 'page' → 配信ページをiframeで表示（X-Frame制限がなければ表示）
-// ============================================================
 const CAMERAS = [
-  { id:'stv-odori',   type:'img',  interval:60,
-    src:'https://www.stv.jp/cameraimg/ohdori4_L.jpg' },
-
-  { id:'hbc-odori',   type:'img',  interval:60,
-    src:'https://www.hbc.co.jp/info-cam/media/sapporohd_720.jpg' },
-
-  { id:'hbc-jrsa',    type:'img',  interval:60,
-    src:'https://www.hbc.co.jp/info-cam/media/jrsapporohd_720.jpg' },
-
-  // 北海道開発局 → ページ内の img[src] を allorigins proxy経由でスクレイプ
-  { id:'r12-kono',    type:'page', interval:90,
-    pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200102.html' },
-
-  { id:'r36-enami',   type:'page', interval:90,
-    pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118900103.html' },
-
-  { id:'r12-ebetsu',  type:'page', interval:90,
-    pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200110.html' },
+  { id:'stv-odori',   type:'img',  interval:60, src:'https://www.stv.jp/cameraimg/ohdori4_L.jpg' },
+  { id:'hbc-odori',   type:'img',  interval:60, src:'https://www.hbc.co.jp/info-cam/media/sapporohd_720.jpg' },
+  { id:'hbc-jrsa',    type:'img',  interval:60, src:'https://www.hbc.co.jp/info-cam/media/jrsapporohd_720.jpg' },
+  { id:'r12-kono',    type:'page', interval:90, pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200102.html' },
+  { id:'r36-enami',   type:'page', interval:90, pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118900103.html' },
+  { id:'r12-ebetsu',  type:'page', interval:90, pageUrl:'https://www.road-info-prvs.mlit.go.jp/roadinfo/sp/spImageDetail_8118200110.html' },
 ];
 
-// ============================================================
-// 静止画ロード（img直接）
-// ============================================================
 function loadImgCamera(cam) {
   const img  = document.getElementById('img-' + cam.id);
   const ov   = document.getElementById('ov-'  + cam.id);
   if (!img) return;
-
   const url = cam.src + '?_=' + Date.now();
   const tmp = new Image();
-  tmp.onload = () => {
-    img.src = url;
-    ov && ov.classList.add('hidden');
-  };
-  tmp.onerror = () => showFallback(cam, cam.src);
+  tmp.onload = () => { img.src = url; ov && ov.classList.add('hidden'); };
   tmp.src = url;
 }
 
-// ============================================================
-// 北海道開発局ページ → allorigins でHTMLを取得 → img[src]を抽出
-// ============================================================
 async function loadPageCamera(cam) {
   const ov = document.getElementById('ov-' + cam.id);
   const img = document.getElementById('img-' + cam.id);
   if (!img) return;
-
   const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(cam.pageUrl);
   try {
     const res  = await fetch(proxyUrl);
     const json = await res.json();
     const html = json.contents || '';
-
-    // ページ内の道路カメラ画像URLを正規表現で抽出
-    // 北海道開発局のページは <img ... src="...jpg"> 形式
     const match = html.match(/src=["']([^"']*\.jpg[^"']*)/i);
     if (match) {
       let imgSrc = match[1];
-      // 相対URLの場合は補完
-      if (imgSrc.startsWith('/')) {
-        imgSrc = 'https://www.road-info-prvs.mlit.go.jp' + imgSrc;
-      }
-      // proxy経由で画像を取得
+      if (imgSrc.startsWith('/')) imgSrc = 'https://www.road-info-prvs.mlit.go.jp' + imgSrc;
       const imgProxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(imgSrc + '?_=' + Date.now());
       const tmp = new Image();
-      tmp.onload = () => {
-        img.src = imgProxy;
-        ov && ov.classList.add('hidden');
-      };
-      tmp.onerror = () => showFallback(cam, cam.pageUrl);
+      tmp.onload = () => { img.src = imgProxy; ov && ov.classList.add('hidden'); };
       tmp.src = imgProxy;
-    } else {
-      showFallback(cam, cam.pageUrl);
     }
-  } catch (e) {
-    showFallback(cam, cam.pageUrl);
-  }
+  } catch (e) {}
 }
 
-// ============================================================
-// フォールバック（「別窓で開く」ボタン）
-// ============================================================
-function showFallback(cam, url) {
-  const wrap = document.getElementById('wrap-' + cam.id);
-  if (!wrap || wrap.dataset.fallback) return;
-  wrap.dataset.fallback = '1';
-  wrap.style.paddingTop = '0';
-  wrap.innerHTML = `
-    <div class="fallback-inner">
-      <p>セキュリティ設定により画面内での表示ができません<br>（CORS / X-Frame-Options 制限）</p>
-      <a class="open-btn" href="${url}" target="_blank" rel="noopener">▶ ライブカメラを開く</a>
-    </div>`;
-}
-
-// ============================================================
-// カウントダウンタイマー + 定期更新
-// ============================================================
 function startTimer(cam) {
   const badge = document.getElementById('timer-' + cam.id);
+  if (!badge) return;
   let remaining = cam.interval;
-
   setInterval(() => {
     remaining--;
-    if (badge) badge.textContent = remaining + 's';
-
+    badge.textContent = remaining + 's';
     if (remaining <= 0) {
       remaining = cam.interval;
-      if (badge) badge.textContent = '↻';
-      // フォールバック済みなら更新しない
-      const wrap = document.getElementById('wrap-' + cam.id);
-      if (wrap && wrap.dataset.fallback) return;
-
       if (cam.type === 'img') loadImgCamera(cam);
       else loadPageCamera(cam);
     }
   }, 1000);
 }
 
-// ============================================================
-// 初期化
-// ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   CAMERAS.forEach(cam => {
     if (cam.type === 'img')  loadImgCamera(cam);
