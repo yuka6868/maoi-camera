@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>まおい学びの里小 通学路ライブカメラ</title>
+<title>まおい学びの里小 通学路・駅周辺ライブカメラ</title>
 
 <style>
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background-color: #f5f7fa;
+    background-color: #f4f6f9;
     color: #333;
 }
 
 header {
-    background: #2c6fb7;
+    background: #1f4e8c;
     color: white;
-    padding: 15px 10px;
+    padding: 18px;
     text-align: center;
 }
 
@@ -25,46 +25,57 @@ header h1 {
     font-size: 20px;
 }
 
-header p {
-    margin: 5px 0 0;
-    font-size: 12px;
-    opacity: 0.9;
+.section {
+    padding: 20px 15px 10px;
 }
 
-.container {
-    padding: 15px;
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 15px;
 }
 
-.camera-card {
+.card {
     background: white;
+    padding: 18px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    overflow: hidden;
+    text-align: center;
 }
 
-.camera-card h3 {
-    margin: 0;
-    padding: 10px;
+.card h3 {
+    margin: 0 0 10px;
+    font-size: 15px;
+}
+
+.button {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
     font-size: 14px;
-    background: #eef3f8;
+    color: white;
 }
 
-.camera-card img {
-    width: 100%;
-    display: block;
+.road {
+    background: #2c6fb7;
 }
 
-.update-time {
+.station {
+    background: #2e8b57;
+}
+
+footer {
     text-align: center;
     font-size: 12px;
     color: #666;
-    margin-bottom: 10px;
+    padding: 20px;
 }
 </style>
 </head>
@@ -72,67 +83,91 @@ header p {
 <body>
 
 <header>
-    <h1>まおい学びの里小学校 通学路ライブカメラ</h1>
-    <p>※1分ごとに自動更新されます（北海道開発局提供画像）</p>
+<h1>まおい学びの里小学校<br>通学路・駅周辺ライブカメラ</h1>
 </header>
 
-<div class="container">
-    <div class="update-time" id="updateTime"></div>
+<!-- 通学路エリア -->
+<div class="section">
+<div class="section-title">🚸 通学路周辺（北海道開発局）</div>
 
-    <div class="grid">
+<div class="grid">
 
-        <div class="camera-card">
-            <h3>【札幌/北広島】国道274号 西の里</h3>
-            <img src="https://api.allorigins.win/raw?url=https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10101.jpg">
-        </div>
-
-        <div class="camera-card">
-            <h3>【北広島/長沼】国道274号 共栄</h3>
-            <img src="https://api.allorigins.win/raw?url=https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10103.jpg">
-        </div>
-
-        <div class="camera-card">
-            <h3>【千歳/恵庭/長沼】国道337号 中央</h3>
-            <img src="https://api.allorigins.win/raw?url=https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10202.jpg">
-        </div>
-
-        <div class="camera-card">
-            <h3>【学校付近】国道274号 長沼町東1線</h3>
-            <img src="https://api.allorigins.win/raw?url=https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10105.jpg">
-        </div>
-
-        <div class="camera-card">
-            <h3>【栗山方面】国道234号 栗山町桜山</h3>
-            <img src="https://api.allorigins.win/raw?url=https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10502.jpg">
-        </div>
-
-        <div class="camera-card">
-            <h3>【広域】国道337号 南長沼</h3>
-            <img src="https://api.allorigins.win/raw?url=https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10201.jpg">
-        </div>
-
-    </div>
+<div class="card">
+<h3>西の里（国道274号）</h3>
+<a class="button road" href="https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10101.jpg" target="_blank">画像を見る</a>
 </div>
 
-<script>
-// 更新時刻表示
-function updateTime(){
-    var now = new Date();
-    document.getElementById("updateTime").innerText =
-        "最終更新: " + now.toLocaleTimeString();
-}
-updateTime();
+<div class="card">
+<h3>共栄（国道274号）</h3>
+<a class="button road" href="https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10103.jpg" target="_blank">画像を見る</a>
+</div>
 
-// 60秒ごとに画像だけ更新
-setInterval(function(){
-    var imgs = document.querySelectorAll("img");
-    imgs.forEach(function(img){
-        var base = img.src.split("&t=")[0];
-        img.src = base + "&t=" + new Date().getTime();
-    });
-    updateTime();
-}, 60000);
-</script>
+<div class="card">
+<h3>中央（国道337号）</h3>
+<a class="button road" href="https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10202.jpg" target="_blank">画像を見る</a>
+</div>
+
+<div class="card">
+<h3>東1線（学校付近）</h3>
+<a class="button road" href="https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10105.jpg" target="_blank">画像を見る</a>
+</div>
+
+<div class="card">
+<h3>桜山（栗山方面）</h3>
+<a class="button road" href="https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10502.jpg" target="_blank">画像を見る</a>
+</div>
+
+<div class="card">
+<h3>南長沼（広域）</h3>
+<a class="button road" href="https://info-hokkaido.road-index.hokkaido.mlit.go.jp/road/C_10201.jpg" target="_blank">画像を見る</a>
+</div>
+
+</div>
+</div>
+
+<!-- 駅エリア -->
+<div class="section">
+<div class="section-title">🚉 駅周辺エリア</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>札幌駅</h3>
+<a class="button station" href="https://www.stv.jp/webcam/" target="_blank">ライブを見る</a>
+</div>
+
+<div class="card">
+<h3>大通駅</h3>
+<a class="button station" href="https://www.stv.jp/webcam/" target="_blank">ライブを見る</a>
+</div>
+
+<div class="card">
+<h3>新さっぽろ駅</h3>
+<a class="button station" href="https://www.city.sapporo.jp/kensetsu/doro/yuki/webcamera.html" target="_blank">ライブを見る</a>
+</div>
+
+<div class="card">
+<h3>北広島駅</h3>
+<a class="button station" href="https://info-hokkaido.road-index.hokkaido.mlit.go.jp/" target="_blank">ライブを見る</a>
+</div>
+
+<div class="card">
+<h3>恵庭駅</h3>
+<a class="button station" href="https://info-hokkaido.road-index.hokkaido.mlit.go.jp/" target="_blank">ライブを見る</a>
+</div>
+
+<div class="card">
+<h3>千歳駅</h3>
+<a class="button station" href="https://www.city.chitose.lg.jp/docs/94-85255-169-921.html" target="_blank">ライブを見る</a>
+</div>
+
+</div>
+</div>
+
+<footer>
+※各公式サイトのページへ移動します。<br>
+情報は各提供元をご確認ください。
+</footer>
 
 </body>
 </html>
