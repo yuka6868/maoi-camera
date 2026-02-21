@@ -230,6 +230,23 @@
   <section class="section">
     <div class="section-label">
       <span class="accent-icon">🔺</span>
+      <h2>ライブカメラ：学校周辺</h2>
+    </div>
+    <div class="grid">
+      <div class="cam-card">
+        <div class="cam-title"><span>長沼町東6線北 — 夕張川</span><span class="timer-badge" id="timer-naganuma">600s</span></div>
+        <div class="cam-body" id="wrap-naganuma">
+          <img class="live-img" id="img-naganuma" alt="夕張川旧栗山水位観測所">
+          <div class="img-overlay" id="ov-naganuma"><div class="spinner"></div></div>
+        </div>
+        <div class="refresh-note">10分更新 / 国土交通省北海道開発局 <a href="https://info-dam.hdb.hkd.mlit.go.jp/river/detail2/19a00116.htm" target="_blank" style="color:var(--text-sub)">詳細ページ</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">
+      <span class="accent-icon">🔺</span>
       <h2>気象情報</h2>
     </div>
 
@@ -299,7 +316,8 @@
 
 <script>
 const CAMERAS = [
-  { id:'hbc-odori', type:'img', interval:60, src:'https://www.hbc.co.jp/info-cam/media/sapporohd_720.jpg' },
+  { id:'hbc-odori',  type:'img', interval:60,  src:'https://www.hbc.co.jp/info-cam/media/sapporohd_720.jpg' },
+  { id:'naganuma',   type:'img', interval:600, src:'https://info-dam.hdb.hkd.mlit.go.jp/images/camera/19A00116.jpg' },
 ];
 
 function loadImgCamera(cam) {
